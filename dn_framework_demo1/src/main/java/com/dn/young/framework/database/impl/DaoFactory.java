@@ -1,6 +1,9 @@
 package com.dn.young.framework.database.impl;
 
+//import android.database.sqlite.SQLiteDatabase;
+
 import java.lang.reflect.Constructor;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +11,11 @@ public class DaoFactory<T extends BaseDao<E>, E> {
 
     private static DaoFactory daoFactory;
 
-    private Map<String, T> daoMap;
+    //定义一个数据库连接池
+    protected Map<String, T> daoMap;
+
+    //
+//    private SQLiteDatabase sqLiteDatabaseSplit;
 
     public synchronized static DaoFactory getInstance() {
         if (daoFactory == null) {
@@ -18,7 +25,7 @@ public class DaoFactory<T extends BaseDao<E>, E> {
     }
 
     private DaoFactory() {
-        daoMap = new HashMap<>();
+        daoMap = Collections.synchronizedMap(new HashMap<String, T>());
     }
 
     public synchronized T getDao(Class<T> daoClass, Class<E> clazz) {
